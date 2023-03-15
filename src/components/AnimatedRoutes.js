@@ -2,12 +2,10 @@ import React from "react";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 
-import { Home, Illustration, NotFound } from "../pages";
+import { Home, Illustration, NotFound,Login,Registration } from "../pages";
 import { AppSkeleton, PrivateRoute } from ".";
 import { ROUTES } from "../utils/constants";
-import Login from "./Login";
-import Registration from "./Registration";
-import Input from "../pages/input/Input";
+import Input from "../pages/input";
 
 const AnimatedRoutes = () => {
   const location = useLocation();

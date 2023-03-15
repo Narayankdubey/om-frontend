@@ -32,11 +32,6 @@ export default function validateForm(data) {
   }
   if (!data.premiumFrequency || data.premiumFrequency === "") {
     errors.premiumFrequency = "Premium Frequency is required";
-  } else {
-    if (data.premiumFrequency < 10000 || data.premiumFrequency > 50000) {
-      errors.premiumFrequency =
-        "premium should be in range between 10000 to 50000";
-    }
   }
   if (!data.pt || data.pt === "") {
     errors.pt = "PT is required";

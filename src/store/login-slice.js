@@ -5,18 +5,18 @@ const initialState = {
   user: {},
 };
 
-const userSlice = createSlice({
+const loginSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     setUserDetails(state, action) {
       state.isAuth = true;
       state.user = action.payload.user;
-      // window.location.replace("/home");
+      window.location.replace("");
     },
   },
 });
 
-export const userActions = userSlice.actions;
+export const userActions = loginSlice.actions;
 
-export default userSlice;
+export default loginSlice;

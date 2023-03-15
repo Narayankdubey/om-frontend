@@ -1,10 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  premiumData: [],
-  message: "",
-  newPremiumData: {},
-  premiumById: {},
+  premiumData: {
+    dob: "",
+    gender: "male",
+    sumAssured: "",
+    modalPremium: "",
+    premiumFrequency: "Yearly",
+    pt: "",
+    ppt: "",
+  },
+  calculatedPremium: [],
 };
 const premiumSlice = createSlice({
   name: "premium",
@@ -12,18 +18,9 @@ const premiumSlice = createSlice({
   reducers: {
     setPremiumDetails(state, action) {
       state.premiumData = action.payload.data;
-      state.message = action.payload.message;
     },
-    addPremiumDetails(state, action) {
-      state.newPremiumData = action.payload.data;
-      state.message = action.payload.message;
-    },
-    deletePremium(state, action) {
-      state.message = action.payload.message;
-    },
-    getPremiumById(state, action) {
-      state.message = action.payload.message;
-      state.premiumById = action.payload.data;
+    setcalculatedPremium(state, action) {
+      state.calculatedPremium = action.payload;
     },
   },
 });

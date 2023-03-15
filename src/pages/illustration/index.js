@@ -1,54 +1,86 @@
-import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import React, { useEffect } from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { Box, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { getCalculatedPremium } from "../../store/premium-actions";
+import { userData } from "../../utils/helper";
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+const columns = [
+  {
+    title: "Policy Year",
+    fieldName: "policyYear",
+  },
+  {
+    title: "Premium",
+    fieldName: "premium",
+  },
+  {
+    title: "Sum Assured",
+    fieldName: "sumAssured",
+  },
+  {
+    title: "Bonus Rate",
+    fieldName: "bonusRate",
+  },
+  {
+    title: "Bonus Amount",
+    fieldName: "bonusAmount",
+  },
+  {
+    title: "Total Benefit",
+    fieldName: "totalBenefit",
+  },
+  {
+    title: "Net Cashflows",
+    fieldName: "netCashflows",
+  },
 ];
 
 export default function Illustration() {
+  const dispatch = useDispatch();
+  const { calculatedPremium } = useSelector((state) => state.premium);
+
+  useEffect(() => {
+    dispatch(getCalculatedPremium("6411a2de327fee72adf91a5a"));
+  }, [dispatch]);
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+    <Box p={4}>
+      <Paper sx={{ p: 1 }}>
+        <Typography variant="h5">Premiums</Typography>
+      </Paper>
+      <TableContainer component={Paper} sx={{ mt: 2, maxHeight: 440 }}>
+        <Table stickyHeader sx={{ minWidth: 650 }}>
+          <TableHead>
+            <TableRow>
+              {columns.map((item) => (
+                <TableCell key={item.fieldName}>{item?.title}</TableCell>
+              ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {calculatedPremium &&
+              calculatedPremium.length > 0 &&
+              calculatedPremium.map((row, index) => (
+                <TableRow
+                  key={index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  {columns.map((elem, i) => (
+                    <TableCell key={`${index}-${i}`}>
+                      {row[elem?.fieldName]}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }

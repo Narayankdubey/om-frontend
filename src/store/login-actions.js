@@ -11,7 +11,7 @@ export const authenticateUser = (body) => {
       const data = await axios.post("/login", body);
       axios.defaults.headers.Authorization = `Bearer ${data.data.token}`;
       authService.setAccessToken(data.data.token);
-      authService.setUserDetails(btoa(JSON.stringify(data.data)));
+      authService.setUserDetails(JSON.stringify(data.data));
       dispatch(
         userActions.setUserDetails({
           user: data.data || {},
@@ -29,6 +29,7 @@ export const authenticateUser = (body) => {
 
 export const handleError = (dispatch, error) => {
   let err = "API Server is not working!";
+  console.log(error.response.status)
   if (error.response) {
     err = error.response.data;
   }
@@ -64,3 +65,4 @@ export const logoutUser = () => {
     }
   };
 };
+

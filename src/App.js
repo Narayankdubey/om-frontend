@@ -1,16 +1,14 @@
 import { BrowserRouter } from "react-router-dom";
-import { Fragment } from "react";
-
+import { useSelector } from "react-redux";
 import "./App.css";
 import { AnimatedRoutes } from "./components";
-import Notification from "./components/Notification/Notification";
-import { useSelector } from "react-redux";
+import Notification from "./components/widget/Notification/Notification";
 
 function App() {
   const notification = useSelector((state) => state.ui.notification);
 
   return (
-    <Fragment>
+    <>
       {notification && (
         <Notification
           status={notification.status}
@@ -21,7 +19,7 @@ function App() {
       <BrowserRouter>
         <AnimatedRoutes />
       </BrowserRouter>
-    </Fragment>
+    </>
   );
 }
 
