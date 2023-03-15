@@ -1,7 +1,7 @@
 import moment from "moment";
 
 export const ROUTES = {
-  HOME: "/",
+  HOME: "home",
   INPUT: "input",
   ILLUSTRATION: "illustration",
   NOTFOUND: "notfound",
@@ -52,3 +52,6 @@ export default function validateForm(data) {
   }
   return errors;
 }
+
+export const homeBackgroundImg = "https://images.unsplash.com/photo-1548983965-416c1920352e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80";
+export const loginBackgroundImg = "https://static.vecteezy.com/system/resources/previews/007/164/537/large_2x/fingerprint-identity-sensor-data-protection-system-podium-hologram-blue-light-and-concept-free-vector.jpg"

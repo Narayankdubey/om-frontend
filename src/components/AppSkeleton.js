@@ -15,6 +15,16 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
 
 const AppSkeleton = () => {
   const navigate = useNavigate();
@@ -23,6 +33,24 @@ const AppSkeleton = () => {
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event &&
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -51,14 +79,41 @@ const AppSkeleton = () => {
   };
 
   const pages = [
-    { title: "Home", link: "" },
+    { title: "Home", link: "home" },
     { title: "Input", link: "input" },
     { title: "Illustration", link: "illustration" },
   ];
-  const settings = [{ title: "Logout", clickHandle: logOutHandle }];
+  const settings = [
+    { title: "Logout", clickHandle: logOutHandle, icon: <LogoutIcon /> },
+  ];
+
+  const list = (anchor) => (
+    <Box
+      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <Box height={"30px"}></Box>
+      <List>
+        {pages.map((page, index) => (
+          <Link key={page.link} to={page.link}>
+            <ListItem disablePadding sx={{bgcolor:location.pathname.includes(page.link) && "grey"}}>
+              <ListItemButton>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={page.title} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        ))}
+      </List>
+    </Box>
+  );
 
   return (
-    <>
+    <Box sx={{ backgroundColor: "#f0f2f5" }}>
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -87,12 +142,13 @@ const AppSkeleton = () => {
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={handleOpenNavMenu}
+                // onClick={handleOpenNavMenu}
+                onClick={toggleDrawer("left", true)}
                 color="inherit"
               >
                 <MenuIcon />
               </IconButton>
-              <Menu
+              {/* <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
                 anchorOrigin={{
@@ -116,6 +172,15 @@ const AppSkeleton = () => {
                   </MenuItem>
                 ))}
               </Menu>
+              <Button onClick={toggleDrawer("left", true)}>{"left"}</Button> */}
+              <SwipeableDrawer
+                anchor={"left"}
+                open={state["left"]}
+                onClose={toggleDrawer("left", false)}
+                onOpen={toggleDrawer("left", true)}
+              >
+                {list("left")}
+              </SwipeableDrawer>
             </Box>
             <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
             <Typography
@@ -141,6 +206,7 @@ const AppSkeleton = () => {
                 <Button
                   onClick={() => navigateTo(page.link)}
                   sx={{ my: 2, color: "white", display: "block" }}
+                  variant={location.pathname.includes(page.link) && "contained"}
                 >
                   {page.title}
                 </Button>
@@ -171,7 +237,11 @@ const AppSkeleton = () => {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Button textAlign="center" onClick={setting.clickHandle}>
+                    <Button
+                      textAlign="center"
+                      onClick={setting.clickHandle}
+                      startIcon={setting?.icon}
+                    >
                       {setting.title}
                     </Button>
                   </MenuItem>
@@ -181,13 +251,13 @@ const AppSkeleton = () => {
           </Toolbar>
         </Container>
       </AppBar>
-      <Outlet />
-      <footer>
-        {/* <Row justify="center" style={{ textAlign: "center" }}>
-            Copyrights @ 2022. Valuebound. All rights reserved
-          </Row> */}
+      <Box minHeight={"calc(100vh - 100px)"}>
+        <Outlet />
+      </Box>
+      <footer style={{ textAlign: "center", padding: 5 }}>
+        <small>Copyrights @ 2022. Valuebound. All rights reserved</small>
       </footer>
-    </>
+    </Box>
   );
 };
 

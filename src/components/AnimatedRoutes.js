@@ -1,8 +1,8 @@
 import React from "react";
 
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
-import { Home, Illustration, NotFound,Login,Registration } from "../pages";
+import { Home, Illustration, NotFound, Login, Registration } from "../pages";
 import { AppSkeleton, PrivateRoute } from ".";
 import { ROUTES } from "../utils/constants";
 import Input from "../pages/input";
@@ -12,8 +12,9 @@ const AnimatedRoutes = () => {
 
   return (
     <Routes location={location} key={location.pathname}>
+      <Route path="/" element={<Navigate to={ROUTES.HOME} replace />} />
       <Route
-        path={ROUTES.HOME}
+        path={"/"}
         element={
           <PrivateRoute>
             <AppSkeleton />
@@ -26,7 +27,6 @@ const AnimatedRoutes = () => {
       </Route>
       <Route path={ROUTES.LOGIN} element={<Login />} />
       <Route path={ROUTES.REGISTRATION} element={<Registration />} />
-
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

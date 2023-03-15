@@ -6,17 +6,24 @@ import {
   CardContent,
   MenuItem,
   TextField,
+  Typography,
 } from "@mui/material";
 import validateForm, { ROUTES } from "../../utils/constants";
-import { updatePremiumById, getPremiumDetailsById } from "../../store/premium-actions";
+import {
+  updatePremiumById,
+  getPremiumDetailsById,
+} from "../../store/premium-actions";
 import { useDispatch, useSelector } from "react-redux";
 import { userData } from "../../utils/helper";
 import { useNavigate } from "react-router";
+import { Calculate } from "@mui/icons-material";
+
+import calculateImg from "../../assets/calculate.svg";
 
 const Input = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const {premiumData}= useSelector((state)=>state.premium)
+  const navigate = useNavigate();
+  const { premiumData } = useSelector((state) => state.premium);
   const [state, setState] = useState(premiumData);
   const [errors, setErrors] = React.useState({});
   const { dob, gender, sumAssured, modalPremium, premiumFrequency, pt, ppt } =
@@ -29,27 +36,39 @@ const Input = () => {
     const noErrors = Object.keys(validateError).length === 0;
     setErrors(validateError);
     if (noErrors) {
-      dispatch(updatePremiumById(userData._id,state)).then((res)=>{
-        if(res)
-        navigate("/"+ROUTES.ILLUSTRATION)
+      dispatch(updatePremiumById(userData._id, state)).then((res) => {
+        if (res) navigate("/" + ROUTES.ILLUSTRATION);
       });
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getPremiumDetailsById(userData._id));
-  },[dispatch])
-  useEffect(()=>{
-    if(premiumData)
-      setState(premiumData)
-  },[premiumData])
+  }, [dispatch]);
+  useEffect(() => {
+    if (premiumData) setState(premiumData);
+  }, [premiumData]);
 
   return (
-    <Box>
-      <Card sx={{ my: "5%", mx: "10%" }}>
+    <Box display={"flex"}>
+      <Box
+        width={"70%"}
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <img src={calculateImg} alt="Calculate" width={"60%"} style={{marginTop:"40px"}}/>
+        <Typography variant="h5" mt={2} fontWeight={"bolder"}>Calulate Your Premium</Typography>
+        <Typography  fontWeight={"bold"}>Choose The Best Policy for You</Typography>
+      </Box>
+      <Card sx={{ width: "100%", maxWidth: "300px", mt: 5, height:"fit-content" }}>
         <CardContent
           sx={{ display: "flex", flexDirection: "column", rowGap: 2 }}
         >
+          <Typography variant="h6" textAlign={"center"}>
+            Calculate Policies
+          </Typography>
           <TextField
             label="DOB"
             size="small"
@@ -61,7 +80,6 @@ const Input = () => {
             error={errors.dob ? true : false}
             helperText={errors.dob}
           />
-          {console.log(gender, 'gender')}
           <TextField
             label="gender"
             size="small"
@@ -134,7 +152,7 @@ const Input = () => {
             helperText={errors.ppt}
           />
           <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Button variant="contained" onClick={handleSubmit}>
+            <Button variant="contained" onClick={handleSubmit} endIcon={<Calculate/>}>
               Calculate Premium
             </Button>
           </Box>

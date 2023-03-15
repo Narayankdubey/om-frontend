@@ -23,12 +23,12 @@ export const updatePremiumById = (id, body) => {
     try {
       dispatch(uiActions.toggleLoader());
       await axios.post("/premium/" + id, body);
-      await dispatch(
-        uiActions.showNotification({
-          status: "success",
-          message: "successfully created",
-        })
-      );
+      // await dispatch(
+      //   uiActions.showNotification({
+      //     status: "success",
+      //     message: "successfully created",
+      //   })
+      // );
       return true;
     } catch (error) {
       handleError(dispatch, error);

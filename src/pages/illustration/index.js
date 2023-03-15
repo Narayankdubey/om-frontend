@@ -47,14 +47,14 @@ export default function Illustration() {
   const { calculatedPremium } = useSelector((state) => state.premium);
 
   useEffect(() => {
-    dispatch(getCalculatedPremium("6411a2de327fee72adf91a5a"));
+    dispatch(getCalculatedPremium(userData?._id));
   }, [dispatch]);
   return (
     <Box p={4}>
       <Paper sx={{ p: 1 }}>
         <Typography variant="h5">Premiums</Typography>
       </Paper>
-      <TableContainer component={Paper} sx={{ mt: 2, maxHeight: 440 }}>
+      <TableContainer component={Paper} sx={{ mt: 2, maxHeight: "calc(100vh - 250px)" }}>
         <Table stickyHeader sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
